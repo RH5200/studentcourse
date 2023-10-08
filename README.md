@@ -1,39 +1,23 @@
 # StudentCourse
 
 #### 介绍
-{**以下是 Gitee 平台说明，您可以替换此简介**
-Gitee 是 OSCHINA 推出的基于 Git 的代码托管平台（同时支持 SVN）。专为开发者提供稳定、高效、安全的云端软件开发协作平台
-无论是个人、团队、或是企业，都能够用 Gitee 实现代码托管、项目管理、协作开发。企业项目请看 [https://gitee.com/enterprises](https://gitee.com/enterprises)}
+   学生选课信息管理系统是为了提供一个高效、准确和可靠的方式来管理学生的选课信息。该系统可以帮助学校、教务部门和学生轻松地处理选课过程中的各种事务，例如选课登记、课程查询、成绩管理等。通过该系统，可以提高选课过程的效率，减少人工操作的错误，同时也便于对选课数据进行统计分析和生成报表。学生选课信息管理系统的目的是提供一个一体化的解决方案，以满足学生、教师和学校的需求，促进教学工作的顺利进行。
+#### Introduce
 
-#### 软件架构
-软件架构说明
+Student course selection information management system is designed to provide an efficient, accurate and reliable way to manage student course selection information. The system can help schools, educational departments and students to handle various matters in the course selection process easily, such as course registration, course inquiry, grade management and so on. This system can improve the efficiency of course selection process, reduce manual errors, and facilitate the statistical analysis of course selection data and generate reports. The purpose of the student course selection information management system is to provide an integrated solution to meet the needs of students, teachers and schools, and promote the smooth progress of teaching work.
 
+#### 项目背景
 
-#### 安装教程
-
-1.  xxxx
-2.  xxxx
-3.  xxxx
-
-#### 使用说明
-
-1.  xxxx
-2.  xxxx
-3.  xxxx
-
-#### 参与贡献
-
-1.  Fork 本仓库
-2.  新建 Feat_xxx 分支
-3.  提交代码
-4.  新建 Pull Request
+1.  软件编译环境: IntelliJ IDEA 2022
+2.  技术栈：SpringBoot 、MyBatis、MySQL、Redis、Vue、Element-Ui、Ajax
 
 
-#### 特技
+#### Project background
 
-1.  使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2.  Gitee 官方博客 [blog.gitee.com](https://blog.gitee.com)
-3.  你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解 Gitee 上的优秀开源项目
-4.  [GVP](https://gitee.com/gvp) 全称是 Gitee 最有价值开源项目，是综合评定出的优秀开源项目
-5.  Gitee 官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6.  Gitee 封面人物是一档用来展示 Gitee 会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+1. Software compilation environment: IntelliJ IDEA 2022
+
+2. Technology stack: SpringBoot, MyBatis, MySQL, Redis, Vue, Element-Ui, Ajax
+
+
+
+
