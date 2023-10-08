@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.rh.mapper.CourseTeacherMapper">
+    <resultMap id="BaseResultMap" type="com.rh.model.CourseTeacher">
+        <id column="ctid" property="ctid" jdbcType="INTEGER"/>
+        <result column="course_id" property="courseId" jdbcType="INTEGER"/>
+        <result column="teacher_id" property="teacherId" jdbcType="INTEGER"/>
+        <result column="term" property="term" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        ctid
+        , course_id, teacher_id, term
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from course_teacher
+        where ctid = #{ctid,jdbcType=INTEGER}
+    </select>
+    <select id="findCourseTeacher" resultType="com.rh.model.CourseTeacher">
+        SELECT c.course_id,c.course_name,c.course_credit,t.teacher_id,t.teacher_name,ct.term
+        FROM studentcourse.course c INNER JOIN studentcourse.course_teacher ct ON c.course_id = ct.course_id
+        INNER JOIN studentcourse.teacher t ON ct.teacher_id = t.teacher_id
+        <where>
+            <if test="course_id != null and course_id != ''">
+                AND c.course_id LIKE CONCAT('%', #{course_id}, '%')
+            </if>
+            <if test="course_name != null and course_name != ''">
+                AND c.course_name LIKE CONCAT('%', #{course_name}, '%')
+            </if>
+            <if test="t.teacher_id != null t.teacher_id != ''">
+                AND t.teacher_id LIKE CONCAT('%', #{teacher_id}, '%')
+            </if>
+            <if test="course_credit != null and course_credit != ''">
+                AND c.course_credit LIKE CONCAT('%', #{course_credit}, '%')
+            </if>
+            <if test="teacher_name != null and teacher_name != ''">
+                AND t.teacher_name LIKE CONCAT('%', #{teacher_name}, '%')
+            </if>
+        </where>
+    </select>
+
+    <select id="findCourseTeacherInfo" resultType="com.rh.model.CourseTeacherInfo">
+        SELECT DISTINCT c.course_id, c.course_name, c.course_credit, t.teacher_id, t.teacher_name,ct.term,ct.ctid
+        FROM studentcourse.course c
+        INNER JOIN studentcourse.course_teacher ct ON c.course_id = ct.course_id
+        INNER JOIN studentcourse.teacher t ON ct.teacher_id = t.teacher_id
+        <where>
+            <if test="course_name != null and course_name != ''">
+                c.course_name LIKE CONCAT('%', #{course_name}, '%')
+            </if>
+            <if test="teacher_id != 0 and teacher_id != null">
+                AND t.teacher_id LIKE CONCAT('%', #{teacher_id}, '%')
+            </if>
+            <if test="teacher_name != null and teacher_name != ''">
+                AND t.teacher_name LIKE CONCAT('%', #{teacher_name}, '%')
+            </if>
+        </where>
+        ORDER BY teacher_id
+    </select>
+
+    <select id="addCheck" resultType="com.rh.model.CourseTeacher">
+        SELECT * FROM course_teacher
+        WHERE course_id = #{course_id}
+          AND teacher_id = #{teacher_id}
+    </select>
+
+    <select id="findAll" resultType="com.rh.model.CourseTeacher">
+        select *
+        from course_teacher
+    </select>
+    <delete id="del" parameterType="java.lang.Integer">
+        delete
+        from course_teacher
+        where ctid = #{ctid,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.rh.model.CourseTeacher">
+        insert into course_teacher (ctid, course_id, teacher_id,
+                                    term)
+        values (#{ctid,jdbcType=INTEGER}, #{courseId,jdbcType=INTEGER}, #{teacherId,jdbcType=INTEGER},
+                #{term,jdbcType=VARCHAR})
+    </insert>
+    <insert id="addCourse" parameterType="com.rh.model.CourseTeacher">
+        insert into course_teacher
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="ctid != null">
+                ctid,
+            </if>
+            <if test="courseId != null">
+                course_id,
+            </if>
+            <if test="teacherId != null">
+                teacher_id,
+            </if>
+            <if test="term != null">
+                term,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="ctid != null">
+                #{ctid,jdbcType=INTEGER},
+            </if>
+            <if test="courseId != null">
+                #{courseId,jdbcType=INTEGER},
+            </if>
+            <if test="teacherId != null">
+                #{teacherId,jdbcType=INTEGER},
+            </if>
+            <if test="term != null">
+                #{term,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.rh.model.CourseTeacher">
+        update course_teacher
+        <set>
+            <if test="courseId != null">
+                course_id = #{courseId,jdbcType=INTEGER},
+            </if>
+            <if test="teacherId != null">
+                teacher_id = #{teacherId,jdbcType=INTEGER},
+            </if>
+            <if test="term != null">
+                term = #{term,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where ctid = #{ctid,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.rh.model.CourseTeacher">
+        update course_teacher
+        set course_id  = #{courseId,jdbcType=INTEGER},
+            teacher_id = #{teacherId,jdbcType=INTEGER},
+            term       = #{term,jdbcType=VARCHAR}
+        where ctid = #{ctid,jdbcType=INTEGER}
+    </update>
+</mapper>

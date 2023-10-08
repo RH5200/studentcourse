@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.rh.mapper.GradeMapper">
+    <resultMap id="BaseResultMap" type="com.rh.model.Grade">
+        <id column="grade_id" property="gradeId" jdbcType="INTEGER"/>
+        <result column="grade_name" property="gradeName" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        grade_id
+        , grade_name
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from grade
+        where grade_id = #{gradeId,jdbcType=INTEGER}
+    </select>
+    <select id="findGrade" resultType="com.rh.model.Grade">
+        select *
+        from grade
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete
+        from grade
+        where grade_id = #{gradeId,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.rh.model.Grade">
+        insert into grade (grade_id, grade_name)
+        values (#{gradeId,jdbcType=INTEGER}, #{gradeName,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.rh.model.Grade">
+        insert into grade
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="gradeId != null">
+                grade_id,
+            </if>
+            <if test="gradeName != null">
+                grade_name,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="gradeId != null">
+                #{gradeId,jdbcType=INTEGER},
+            </if>
+            <if test="gradeName != null">
+                #{gradeName,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.rh.model.Grade">
+        update grade
+        <set>
+            <if test="gradeName != null">
+                grade_name = #{gradeName,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where grade_id = #{gradeId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.rh.model.Grade">
+        update grade
+        set grade_name = #{gradeName,jdbcType=VARCHAR}
+        where grade_id = #{gradeId,jdbcType=INTEGER}
+    </update>
+</mapper>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.rh.mapper.CourseMapper">
+    <resultMap id="BaseResultMap" type="com.rh.model.Course">
+        <id column="course_id" property="courseId" jdbcType="INTEGER"/>
+        <result column="course_name" property="courseName" jdbcType="VARCHAR"/>
+        <result column="course_credit" property="courseCredit" jdbcType="FLOAT"/>
+    </resultMap>
+
+    <select id="findCourse" resultType="com.rh.model.CourseTeacherInfo">
+        SELECT DISTINCT c.course_id, c.course_name, c.course_credit,ct.term
+        FROM studentcourse.course c LEFT JOIN studentcourse.course_teacher ct
+        ON c.course_id = ct.course_id
+        <where>
+            <if test="course_name != null and course_name != ''">
+                c.course_name LIKE CONCAT('%', #{course_name}, '%')
+            </if>
+            <if test="course_id != 0 and course_id != null">
+                AND c.course_id LIKE CONCAT('%', #{course_id}, '%')
+            </if>
+        </where>
+    </select>
+    <sql id="Base_Column_List">
+        course_id
+        , course_name, course_credit
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from course
+        where course_id = #{courseId,jdbcType=INTEGER}
+    </select>
+    <select id="findTeacherCourse" resultType="com.rh.model.CourseTeacherInfo" parameterType="java.lang.Integer">
+        SELECT DISTINCT ct.ctid,c.course_id, c.course_name, c.course_credit,ct.term,t.teacher_name,t.teacher_id
+        FROM studentcourse.course c
+        INNER JOIN studentcourse.course_teacher ct ON c.course_id = ct.course_id
+        INNER JOIN studentcourse.teacher t ON t.teacher_id = ct.teacher_id
+        <where>
+            <if test="teacher_id != 0 and teacher_id != null">
+                t.teacher_id =#{teacher_id,jdbcType=INTEGER}
+            </if>
+        </where>
+        ORDER BY teacher_id
+    </select>
+
+    <delete id="del" parameterType="java.lang.Integer">
+        delete
+        from course
+        where course_id = #{courseId,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.rh.model.Course">
+        insert into course (course_id, course_name, course_credit)
+        values (#{courseId,jdbcType=INTEGER}, #{courseName,jdbcType=VARCHAR}, #{courseCredit,jdbcType=TINYINT})
+    </insert>
+    <insert id="checkAdd">
+        ALTER TABLE course AUTO_INCREMENT = 1
+    </insert>
+    <insert id="add" parameterType="com.rh.model.Course">
+        insert into course
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="courseId != null">
+                course_id,
+            </if>
+            <if test="courseName != null">
+                course_name,
+            </if>
+            <if test="courseCredit != null">
+                course_credit,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="courseId != null">
+                #{courseId,jdbcType=INTEGER},
+            </if>
+            <if test="courseName != null">
+                #{courseName,jdbcType=VARCHAR},
+            </if>
+            <if test="courseCredit != null">
+                #{courseCredit,jdbcType=TINYINT},
+            </if>
+        </trim>
+    </insert>
+    <update id="edit" parameterType="com.rh.model.Course">
+        update course
+        <set>
+            <if test="courseName != null">
+                course_name = #{courseName,jdbcType=VARCHAR},
+            </if>
+            <if test="courseCredit != null">
+                course_credit = #{courseCredit,jdbcType=TINYINT},
+            </if>
+        </set>
+        where course_id = #{courseId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.rh.model.Course">
+        update course
+        set course_name   = #{courseName,jdbcType=VARCHAR},
+            course_credit = #{courseCredit,jdbcType=TINYINT}
+        where course_id = #{courseId,jdbcType=INTEGER}
+    </update>
+</mapper>

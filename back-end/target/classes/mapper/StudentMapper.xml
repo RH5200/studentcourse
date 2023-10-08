@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.rh.mapper.StudentMapper">
+    <resultMap id="BaseResultMap" type="com.rh.model.Student" >
+        <id column="student_id" property="studentId" jdbcType="INTEGER" />
+        <result column="student_name" property="studentName" jdbcType="VARCHAR" />
+        <result column="password" property="password" jdbcType="VARCHAR" />
+        <result column="sex" property="sex" jdbcType="VARCHAR" />
+        <result column="student_phone" property="studentPhone" jdbcType="VARCHAR" />
+        <result column="class_id" property="classId" jdbcType="INTEGER" />
+        <result column="grade_id" property="gradeId" jdbcType="INTEGER" />
+        <result column="department_id" property="departmentId" jdbcType="INTEGER" />
+    </resultMap>
+
+    <select id="findById" resultType="com.rh.model.Student">
+        SELECT s.*,g.grade_name,c.class_name,d.department_name
+        FROM studentcourse.student s
+                 INNER JOIN studentcourse.class c ON  c.class_id= s.class_id
+                 INNER JOIN studentcourse.grade g ON g.grade_id = s.grade_id
+                 INNER JOIN studentcourse.department d ON d.department_id = s.department_id
+        where student_id = #{studentId,jdbcType=INTEGER}
+    </select>
+
+    <select id="login" resultType="com.rh.model.Student">
+        select *
+        from student
+        where student_id = #{studentId,jdbcType=INTEGER}
+          and password = #{password}
+    </select>
+    <select id="findStudent" resultType="com.rh.model.Student" >
+        SELECT DISTINCT s.*,c.class_name,g.grade_name,d.department_name
+        FROM studentcourse.student s
+        INNER JOIN studentcourse.class c ON  c.class_id= s.class_id
+        INNER JOIN studentcourse.grade g ON g.grade_id = s.grade_id
+        INNER JOIN studentcourse.department d ON d.department_id = s.department_id
+        <where>
+            <if test="student_id != null and student_id != ''">
+                student_id LIKE CONCAT('%', #{student_id}, '%')
+            </if>
+            <if test="student_name != null and student_name != ''">
+                AND student_name LIKE CONCAT('%', #{student_name}, '%')
+            </if>
+        </where>
+    </select>
+    <sql id="Base_Column_List">
+        sid
+        , sname, password, sex
+    </sql>
+
+
+    <delete id="del" parameterType="java.lang.Integer">
+        delete
+        from student
+        where student_id = #{studentId,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.rh.model.Student" >
+        insert into student (student_id, student_name, password,
+                             sex, student_phone, class_id,
+                             grade_id, department_id)
+        values (#{studentId,jdbcType=INTEGER}, #{studentName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
+                #{sex,jdbcType=VARCHAR}, #{studentPhone,jdbcType=VARCHAR}, #{classId,jdbcType=INTEGER},
+                #{gradeId,jdbcType=INTEGER}, #{departmentId,jdbcType=INTEGER})
+    </insert>
+    <insert id="add" parameterType="com.rh.model.Student" >
+        insert into student
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="studentId != null" >
+                student_id,
+            </if>
+            <if test="studentName != null" >
+                student_name,
+            </if>
+            <if test="password != null" >
+                password,
+            </if>
+            <if test="sex != null" >
+                sex,
+            </if>
+            <if test="studentPhone != null" >
+                student_phone,
+            </if>
+            <if test="classId != null" >
+                class_id,
+            </if>
+            <if test="gradeId != null" >
+                grade_id,
+            </if>
+            <if test="departmentId != null" >
+                department_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="studentId != null" >
+                #{studentId,jdbcType=INTEGER},
+            </if>
+            <if test="studentName != null" >
+                #{studentName,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null" >
+                #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="sex != null" >
+                #{sex,jdbcType=VARCHAR},
+            </if>
+            <if test="studentPhone != null" >
+                #{studentPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="classId != null" >
+                #{classId,jdbcType=INTEGER},
+            </if>
+            <if test="gradeId != null" >
+                #{gradeId,jdbcType=INTEGER},
+            </if>
+            <if test="departmentId != null" >
+                #{departmentId,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <update id="edit" parameterType="com.rh.model.Student">
+        update student
+        <set >
+            <if test="studentName != null" >
+                student_name = #{studentName,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null" >
+                password = #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="sex != null" >
+                sex = #{sex,jdbcType=VARCHAR},
+            </if>
+            <if test="studentPhone != null" >
+                student_phone = #{studentPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="classId != null" >
+                class_id = #{classId,jdbcType=INTEGER},
+            </if>
+            <if test="gradeId != null" >
+                grade_id = #{gradeId,jdbcType=INTEGER},
+            </if>
+            <if test="departmentId != null" >
+                department_id = #{departmentId,jdbcType=INTEGER},
+            </if>
+        </set>
+        where student_id = #{studentId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.rh.model.Student">
+        update student
+        set student_name = #{studentName,jdbcType=VARCHAR},
+            password = #{password,jdbcType=VARCHAR},
+            sex = #{sex,jdbcType=VARCHAR},
+            student_phone = #{studentPhone,jdbcType=VARCHAR},
+            class_id = #{classId,jdbcType=INTEGER},
+            grade_id = #{gradeId,jdbcType=INTEGER},
+            department_id = #{departmentId,jdbcType=INTEGER}
+        where student_id = #{studentId,jdbcType=INTEGER}
+    </update>
+</mapper>
